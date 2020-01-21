@@ -1,0 +1,23 @@
+{
+  "name": "channelhashbot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "lint": "eslint ."
+  },
+  "author": "YouTwitFace <contact@lungers.com>",
+  "license": "AGPL-3.0",
+  "dependencies": {
+    "@youtwitface/escape-html": "^1.0.0",
+    "dotenv": "^8.2.0",
+    "nedb": "^1.8.0",
+    "nedb-promise": "^2.0.1",
+    "telegraf": "^3.35.0",
+    "uuid": "^3.4.0"
+  },
+  "devDependencies": {
+    "eslint": "^6.8.0"
+  }
+}
