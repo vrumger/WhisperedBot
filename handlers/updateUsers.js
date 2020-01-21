@@ -27,21 +27,23 @@ module.exports = (bot, db) => {
         }
     };
 
-    bot.use((ctx, next) => {
-        [
-            ctx.message && ctx.message.forwarded_from,
-            ctx.message && ctx.message.from,
-            ctx.editedMessage && ctx.editedMessage.from,
-            ctx.callbackQuery && ctx.callbackQuery.from,
-            ctx.inlineQuery && ctx.inlineQuery.from,
-            ctx.channelPost && ctx.channelPost.from,
-            ctx.editedChannelPost && ctx.editedChannelPost.from,
-            ctx.shippingQuery && ctx.shippingQuery.from,
-            ctx.preCheckoutQuery && ctx.preCheckoutQuery.from,
-            ctx.chosenInlineResult && ctx.chosenInlineResult.from,
-        ]
-            .filter(Boolean)
-            .forEach(updateUser);
+    bot.use(async (ctx, next) => {
+        await Promise.all(
+            [
+                ctx.message && ctx.message.forwarded_from,
+                ctx.message && ctx.message.from,
+                ctx.editedMessage && ctx.editedMessage.from,
+                ctx.callbackQuery && ctx.callbackQuery.from,
+                ctx.inlineQuery && ctx.inlineQuery.from,
+                ctx.channelPost && ctx.channelPost.from,
+                ctx.editedChannelPost && ctx.editedChannelPost.from,
+                ctx.shippingQuery && ctx.shippingQuery.from,
+                ctx.preCheckoutQuery && ctx.preCheckoutQuery.from,
+                ctx.chosenInlineResult && ctx.chosenInlineResult.from,
+            ]
+                .filter(Boolean)
+                .map(updateUser)
+        );
 
         next();
     });
