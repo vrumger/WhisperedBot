@@ -8,10 +8,12 @@ const bot = new Telegraf(process.env.BOT_TOKEN);
 const db = {
     whispers: new NeDB({
         filename: path.join(__dirname, `stores/whispers.db`),
+        timestampData: true,
         autoload: true,
     }),
     users: new NeDB({
         filename: path.join(__dirname, `stores/users.db`),
+        timestampData: true,
         autoload: true,
     }),
 };
