@@ -2,7 +2,8 @@ const base64Decode = string => Buffer.from(string, `base64`).toString();
 
 module.exports = (bot, db) => {
     const showMessageHandler = async (data, ctx) => {
-        const [id, sender, receiver] = data;
+        const { inline_message_id: inlineMessageID } = ctx.callbackQuery;
+        const [sender, receiver] = data;
 
         if (
             sender !== ctx.from.id &&
@@ -13,14 +14,14 @@ module.exports = (bot, db) => {
             return await ctx.answerCbQuery(`You are not allowed to read this.`);
         }
 
-        const whisper = await db.whispers.findOne({ id });
+        const whisper = await db.whispers.findOne({ inlineMessageID });
 
         if (!whisper) {
             return await ctx.answerCbQuery(`Unable to find whisper.`);
         }
 
         await ctx.answerCbQuery(base64Decode(whisper.message), true, {
-            url: `https://t.me/${ctx.botInfo.username}?start=${id}`,
+            url: `https://t.me/${ctx.botInfo.username}?start=${whisper.id}`,
         });
     };
 

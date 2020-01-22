@@ -8,7 +8,7 @@ const inlineOptions = {
 
 module.exports = (bot, db) => {
     const whisperHandler = async ctx => {
-        let [, user, message] = ctx.match;
+        let [, user] = ctx.match;
 
         const _user = await db.users.findOne({
             $or: [
@@ -28,13 +28,6 @@ module.exports = (bot, db) => {
             ? user
             : user.name;
 
-        await db.whispers.insert({
-            id,
-            sender,
-            receiver: receiverID,
-            message: base64Encode(message),
-        });
-
         await ctx.answerInlineQuery(
             [
                 {
@@ -52,7 +45,6 @@ module.exports = (bot, db) => {
                                 {
                                     text: `Show Message 🔐`,
                                     callback_data: JSON.stringify([
-                                        id,
                                         sender,
                                         receiverID,
                                     ]),
@@ -66,5 +58,37 @@ module.exports = (bot, db) => {
         );
     };
 
+    const chosenInlineResultHandler = async ctx => {
+        const {
+            query,
+            inline_message_id: inlineMessageID,
+            result_id: id,
+        } = ctx.chosenInlineResult;
+
+        let [, user, message] = query.match(/^\s*(@\S+?|\d+)\s+(.+)$/s);
+
+        const _user = await db.users.findOne({
+            $or: [
+                { username: user.slice(1).toLowerCase() },
+                { id: parseInt(user) },
+            ],
+        });
+
+        user = _user || user;
+
+        const receiver = [`string`, `number`].includes(typeof user)
+            ? user
+            : user.id;
+
+        await db.whispers.insert({
+            id,
+            inlineMessageID,
+            sender: ctx.from.id,
+            receiver,
+            message: base64Encode(message),
+        });
+    };
+
     bot.inlineQuery(/^\s*(@\S+?|\d+)\s+(.+)$/s, ctx => whisperHandler(ctx));
+    bot.on(`chosen_inline_result`, ctx => chosenInlineResultHandler(ctx));
 };
