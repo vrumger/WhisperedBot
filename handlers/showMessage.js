@@ -3,7 +3,31 @@ const base64Decode = string => Buffer.from(string, `base64`).toString();
 module.exports = (bot, db) => {
     const showMessageHandler = async (data, ctx) => {
         const { inline_message_id: inlineMessageID } = ctx.callbackQuery;
-        const [sender, receiver] = data;
+        let [sender, receiver] = data;
+
+        if (typeof receiver === `string`) {
+            const user = await db.users.findOne({
+                username: receiver.slice(1).toLowerCase(),
+            });
+
+            if (user) {
+                receiver = user.id;
+
+                await ctx.editMessageReplyMarkup({
+                    inline_keyboard: [
+                        [
+                            {
+                                text: `Show Message 🔐`,
+                                callback_data: JSON.stringify([
+                                    sender,
+                                    receiver,
+                                ]),
+                            },
+                        ],
+                    ],
+                });
+            }
+        }
 
         if (
             sender !== ctx.from.id &&
