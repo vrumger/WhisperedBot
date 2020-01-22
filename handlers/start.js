@@ -22,20 +22,25 @@ module.exports = (bot, db) => {
             return await ctx.reply(`Whisper not found.`);
         }
 
+        if (typeof whisper.receiver === `string`) {
+            const user = await db.users.findOne({
+                username: whisper.receiver.slice(1).toLowerCase(),
+            });
+
+            if (user) {
+                whisper.receiver = user.id;
+            }
+        }
+
         if (
             whisper.sender !== ctx.from.id &&
-            (typeof whisper.receiver === `number` &&
-                whisper.receiver !== ctx.from.id ||
-                typeof whisper.receiver === `string` &&
-                    whisper.receiver !== ctx.from.username)
+            whisper.receiver !== ctx.from.id
         ) {
             return await ctx.reply(`You are not allowed to read this.`);
         }
 
         const sender = await db.users.findOne({ id: whisper.sender });
-        const senderName = escapeHtml(
-            sender ? sender.name : whisper.sender.toString()
-        );
+        const senderName = escapeHtml(sender.name);
         const message = escapeHtml(base64Decode(whisper.message));
 
         await ctx.reply(

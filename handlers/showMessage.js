@@ -29,12 +29,7 @@ module.exports = (bot, db) => {
             }
         }
 
-        if (
-            sender !== ctx.from.id &&
-            (typeof receiver === `number` && ctx.from.id !== receiver ||
-                typeof receiver === `string` &&
-                    ctx.from.username !== receiver)
-        ) {
+        if (sender !== ctx.from.id && receiver !== ctx.from.id) {
             return await ctx.answerCbQuery(`You are not allowed to read this.`);
         }
 
