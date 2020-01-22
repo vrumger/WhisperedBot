@@ -1,4 +1,4 @@
-# ChannelHashBot
+# WhisperedBot
 
 ## Setup
 
