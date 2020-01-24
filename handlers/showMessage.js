@@ -30,7 +30,7 @@ module.exports = (bot, db) => {
         }
 
         if (sender !== ctx.from.id && receiver !== ctx.from.id) {
-            return await ctx.answerCbQuery(`You are not allowed to read this.`);
+            return await ctx.answerCbQuery(`You are not allowed to read this.`, true);
         }
 
         const whisper = await db.whispers.findOne({ inlineMessageID });
