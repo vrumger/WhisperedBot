@@ -17,7 +17,7 @@ module.exports = (bot, db) => {
             ],
         });
 
-        user = _user || user;
+        user = _user || parseInt(user) || user;
 
         const id = uuid();
         const sender = ctx.from.id;
