@@ -14,10 +14,10 @@
     "dotenv": "^8.2.0",
     "nedb": "^1.8.0",
     "nedb-promise": "^2.0.1",
-    "telegraf": "^3.35.0",
-    "uuid": "^3.4.0"
+    "telegraf": "^3.38.0",
+    "uuid": "^8.2.0"
   },
   "devDependencies": {
-    "eslint": "^6.8.0"
+    "eslint": "^7.3.1"
   }
 }
