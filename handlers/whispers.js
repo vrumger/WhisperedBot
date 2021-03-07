@@ -74,7 +74,7 @@ module.exports = (bot, db) => {
             ],
         });
 
-        user = _user || user;
+        user = _user || parseInt(user) || user;
 
         const receiver = [`string`, `number`].includes(typeof user)
             ? user
