@@ -2,7 +2,7 @@ module.exports = bot => {
     const forwardHandler = async ctx => {
         if (ctx.message.forward_sender_name) {
             return await ctx.reply(
-                `Sorry, this user has chosen to hide their ID when forwarding their messages.`
+                `Sorry, this user has chosen to hide their ID when forwarding their messages.`,
             );
         } else if (!ctx.message.forward_from) {
             return await ctx.reply(`Unable to get user ID.`);
@@ -23,9 +23,9 @@ module.exports = bot => {
                         ],
                     ],
                 },
-            }
+            },
         );
     };
 
-    bot.on(`forward`, ctx => forwardHandler(ctx));
+    bot.on(`:forward_date`, ctx => forwardHandler(ctx));
 };

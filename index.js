@@ -2,8 +2,8 @@ require(`dotenv`).config();
 
 const path = require(`path`);
 const NeDB = require(`nedb-promise`);
-const Telegraf = require(`telegraf`);
-const bot = new Telegraf(process.env.BOT_TOKEN);
+const { Bot } = require(`grammy`);
+const bot = new Bot(process.env.BOT_TOKEN);
 
 const db = {
     whispers: new NeDB({
@@ -40,6 +40,6 @@ bot.catch(console.error);
 
 require(`./handlers`)(bot, db);
 
-bot.launch().then(() => {
-    console.log(`@${bot.options.username} is running...`);
+bot.start().then(() => {
+    console.log(`@${bot.botInfo.username} is running...`);
 });

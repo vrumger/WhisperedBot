@@ -54,7 +54,7 @@ module.exports = (bot, db) => {
                     },
                 },
             ],
-            inlineOptions
+            inlineOptions,
         );
     };
 

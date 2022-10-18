@@ -45,7 +45,7 @@ module.exports = (bot, db) => {
 
         await ctx.reply(
             `Whisper from ${senderName}:\n\n<code>${message}</code>`,
-            { parse_mode: `html` }
+            { parse_mode: `html` },
         );
     };
 

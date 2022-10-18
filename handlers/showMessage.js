@@ -30,17 +30,24 @@ module.exports = (bot, db) => {
         }
 
         if (sender !== ctx.from.id && receiver !== ctx.from.id) {
-            return await ctx.answerCbQuery(`You are not allowed to read this.`, true);
+            return await ctx.answerCallbackQuery({
+                text: `You are not allowed to read this.`,
+                show_alert: true,
+            });
         }
 
         const whisper = await db.whispers.findOne({ inlineMessageID });
 
         if (!whisper) {
-            return await ctx.answerCbQuery(`Unable to find whisper.`);
+            return await ctx.answerCallbackQuery({
+                text: `Unable to find whisper.`,
+            });
         }
 
-        await ctx.answerCbQuery(base64Decode(whisper.message), true, {
-            url: `https://t.me/${ctx.botInfo.username}?start=${whisper.id}`,
+        await ctx.answerCallbackQuery({
+            text: base64Decode(whisper.message),
+            show_alert: true,
+            url: `https://t.me/${bot.botInfo.username}?start=${whisper.id}`,
         });
     };
 
