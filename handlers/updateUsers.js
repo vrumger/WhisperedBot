@@ -20,7 +20,7 @@ module.exports = (bot, db) => {
                         ? user.username.toLowerCase()
                         : null,
                 },
-                { upsert: true }
+                { upsert: true },
             );
         } catch (_) {
             // Ignore errors
@@ -42,7 +42,7 @@ module.exports = (bot, db) => {
                 ctx.chosenInlineResult && ctx.chosenInlineResult.from,
             ]
                 .filter(Boolean)
-                .map(updateUser)
+                .map(updateUser),
         );
 
         next();
